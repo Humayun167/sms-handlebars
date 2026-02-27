@@ -1,0 +1,167 @@
+<main class="app-shell">
+    <aside class="sidebar">
+        <h2>School ERP</h2>
+        <nav>
+            <a href="/">Dashboard</a>
+            <a href="/students">Students</a>
+            <a href="/teachers">Teachers</a>
+            <a href="/classes">Classes</a>
+            <a href="/announcements">Announcements</a>
+        </nav>
+    </aside>
+
+    <section class="content">
+        <header class="topbar">
+            <div>
+                <h1>{{title}}</h1>
+                <p>{{subtitle}}</p>
+            </div>
+        </header>
+
+        <section class="stats-grid">
+            <article class="card stat-card">
+                <h3>Total</h3>
+                <strong>{{totalAnnouncements}}</strong>
+                <span>All announcements</span>
+            </article>
+            <article class="card stat-card">
+                <h3>Events</h3>
+                <strong>{{eventCount}}</strong>
+                <span>Scheduled activities</span>
+            </article>
+            <article class="card stat-card">
+                <h3>Notices</h3>
+                <strong>{{noticeCount}}</strong>
+                <span>General notices</span>
+            </article>
+            <article class="card stat-card">
+                <h3>Upcoming</h3>
+                <strong>{{upcomingCount}}</strong>
+                <span>Future dated items</span>
+            </article>
+        </section>
+
+        {{#if hasMessage}}
+            <div class="card alert-card">{{message}}</div>
+        {{/if}}
+
+        <section class="grid-two-col student-layout">
+            <article class="card">
+                <div class="section-head">
+                    <h2>{{#if isEditing}}Edit Announcement{{else}}Add Announcement{{/if}}</h2>
+                    {{#if isEditing}}
+                        <a class="text-link" href="/announcements">Cancel</a>
+                    {{/if}}
+                </div>
+
+                <form class="student-form" method="POST" action="{{#if isEditing}}/announcements/update/{{form.id}}{{else}}/announcements/add{{/if}}">
+                    <label>
+                        Title
+                        <input type="text" name="title" required value="{{form.title}}" placeholder="Announcement title">
+                    </label>
+                    <label>
+                        Message
+                        <input type="text" name="message" required value="{{form.message}}" placeholder="Announcement details">
+                    </label>
+                    <label>
+                        Type
+                        <select name="type" required>
+                            {{#each announcementTypes}}
+                                <option value="{{value}}" {{#if selected}}selected{{/if}}>{{value}}</option>
+                            {{/each}}
+                        </select>
+                    </label>
+                    <label>
+                        Audience
+                        <select name="audience" required>
+                            {{#each announcementAudiences}}
+                                <option value="{{value}}" {{#if selected}}selected{{/if}}>{{value}}</option>
+                            {{/each}}
+                        </select>
+                    </label>
+                    <label>
+                        Date
+                        <input type="date" name="date" required value="{{form.date}}">
+                    </label>
+                    <button type="submit">{{#if isEditing}}Update Announcement{{else}}Save Announcement{{/if}}</button>
+                </form>
+            </article>
+
+            <article class="card">
+                <div class="section-head">
+                    <h2>Filters</h2>
+                </div>
+                <form class="student-form" method="GET" action="/announcements">
+                    <label>
+                        Search
+                        <input type="text" name="search" value="{{filters.search}}" placeholder="Title, message, audience">
+                    </label>
+                    <label>
+                        Type
+                        <select name="type">
+                            <option value="all">All Types</option>
+                            {{#each announcementTypes}}
+                                <option value="{{value}}" {{#if selected}}selected{{/if}}>{{value}}</option>
+                            {{/each}}
+                        </select>
+                    </label>
+                    <label>
+                        Date Sort
+                        <select name="dateSort">
+                            <option value="default" {{#if filters.dateDefaultSelected}}selected{{/if}}>Default</option>
+                            <option value="asc" {{#if filters.dateAscSelected}}selected{{/if}}>Oldest to Newest</option>
+                            <option value="desc" {{#if filters.dateDescSelected}}selected{{/if}}>Newest to Oldest</option>
+                        </select>
+                    </label>
+                    <button type="submit">Apply Filters</button>
+                </form>
+            </article>
+        </section>
+
+        <article class="card">
+            <div class="section-head">
+                <h2>Announcement Records</h2>
+                <a class="text-link" href="/announcements">Reset</a>
+            </div>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Type</th>
+                            <th>Audience</th>
+                            <th>Date</th>
+                            <th>Message</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#if announcements.length}}
+                            {{#each announcements}}
+                                <tr>
+                                    <td>{{title}}</td>
+                                    <td>{{type}}</td>
+                                    <td>{{audience}}</td>
+                                    <td>{{date}}</td>
+                                    <td>{{message}}</td>
+                                    <td>
+                                        <div class="row-actions">
+                                            <a class="small-link" href="/announcements?editId={{id}}">Edit</a>
+                                            <form method="POST" action="/announcements/delete/{{id}}" onsubmit="return confirm('Delete this announcement?')">
+                                                <button type="submit" class="danger-btn">Delete</button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {{/each}}
+                        {{else}}
+                            <tr>
+                                <td colspan="6" class="empty-state">No announcements found for current filters.</td>
+                            </tr>
+                        {{/if}}
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    </section>
+</main>

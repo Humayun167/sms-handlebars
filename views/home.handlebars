@@ -1,0 +1,138 @@
+<main class="app-shell">
+    <aside class="sidebar">
+        <h2>School ERP</h2>
+        <nav>
+            <a href="#overview">Overview</a>
+            <a href="/students">Students</a>
+            <a href="/teachers">Teachers</a>
+            <a href="/classes">Classes</a>
+            <a href="/announcements">Announcements</a>
+        </nav>
+    </aside>
+
+    <section class="content">
+        <header class="topbar" id="overview">
+            <div>
+                <h1>{{title}}</h1>
+                <p>{{date}}</p>
+            </div>
+            <a class="action-btn" href="/students">+ Add Student</a>
+        </header>
+
+        <section class="stats-grid">
+            {{#each stats}}
+                <article class="card stat-card">
+                    <h3>{{label}}</h3>
+                    <strong>{{value}}</strong>
+                    <span>{{note}}</span>
+                </article>
+            {{/each}}
+        </section>
+
+        <section class="grid-two-col">
+            <article class="card" id="students">
+                <div class="section-head">
+                    <h2>Student Directory</h2>
+                    <a class="text-link" href="/students">View All</a>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Roll</th>
+                                <th>Name</th>
+                                <th>Class</th>
+                                <th>Attendance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each students}}
+                                <tr>
+                                    <td>{{roll}}</td>
+                                    <td>{{name}}</td>
+                                    <td>{{class}}</td>
+                                    <td>{{attendance}}</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+
+            <article class="card" id="announcements">
+                <div class="section-head">
+                    <h2>Announcements</h2>
+                    <a class="text-link" href="/announcements">View All</a>
+                </div>
+                <div class="announcements-list">
+                    {{#each announcements}}
+                        <div class="notice-item">
+                            <p class="notice-type">{{type}}</p>
+                            <h3>{{title}}</h3>
+                            <p>{{message}}</p>
+                        </div>
+                    {{/each}}
+                </div>
+            </article>
+        </section>
+
+        <section class="grid-two-col">
+            <article class="card" id="teachers">
+                <div class="section-head">
+                    <h2>Teachers</h2>
+                    <a class="text-link" href="/teachers">View All</a>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Subject</th>
+                                <th>Classes</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each teachers}}
+                                <tr>
+                                    <td>{{name}}</td>
+                                    <td>{{subject}}</td>
+                                    <td>{{classes}}</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+
+            <article class="card" id="classes">
+                <div class="section-head">
+                    <h2>Classrooms</h2>
+                    <a class="text-link" href="/classes">View All</a>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Room</th>
+                                <th>Teacher</th>
+                                <th>Seats</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each classes}}
+                                <tr>
+                                    <td>{{className}}</td>
+                                    <td>{{room}}</td>
+                                    <td>{{classTeacher}}</td>
+                                    <td>{{capacity}}</td>
+                                </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+        </section>
+
+    </section>
+</main>
