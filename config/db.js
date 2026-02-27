@@ -3,7 +3,13 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
+let isConnected = false;
+
 async function connectDB() {
+	if (isConnected) {
+		return;
+	}
+
 	const mongoUri = process.env.MONGODB_URI;
 
 	if (!mongoUri) {
@@ -11,6 +17,7 @@ async function connectDB() {
 	}
 
 	await mongoose.connect(mongoUri);
+	isConnected = true;
 	console.log("MongoDB connected successfully");
 }
 

@@ -1,5 +1,6 @@
 const {create} = require("express-handlebars");
 const express = require("express");
+const path = require("path");
 const connectDB = require("./config/db");
 const Student = require("./model/students");
 const Teacher = require("./model/teachers");
@@ -17,12 +18,24 @@ const subjectOptions = ["Mathematics", "Biology", "History", "English", "Chemist
 const announcementTypes = ["Notice", "Event", "Campaign", "Reminder"];
 const announcementAudiences = ["All", "Teachers", "Students", "Parents", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grades 7-10"];
 
-const hbs = create();
+const hbs = create({
+    layoutsDir: path.join(__dirname, "views", "layouts")
+});
 app.engine("handlebars", hbs.engine);
 
 app.set("view engine", "handlebars");
 
-app.set("views", "./views");
+app.set("views", path.join(__dirname, "views"));
+
+app.use(async (req, res, next) => {
+    try {
+        await connectDB();
+        next();
+    } catch (error) {
+        console.error("Database connection error:", error.message);
+        res.status(500).send("Unable to connect to database.");
+    }
+});
 
 function escapeRegex(value) {
     return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -991,8 +1004,6 @@ const PORT = process.env.PORT || 8080;
 
 async function startServer() {
     try {
-        await connectDB();
-
         app.listen(PORT, () => {
             console.log(`Server is running on port ${PORT}`);
         });
@@ -1002,7 +1013,11 @@ async function startServer() {
     }
 }
 
-startServer();
+if (!process.env.VERCEL) {
+    startServer();
+}
+
+module.exports = app;
 
 
 
