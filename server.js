@@ -52,7 +52,7 @@ app.get("/", async (req, res) => {
         const classCount = await SchoolClass.countDocuments();
 
         const dashboard = {
-            title: "Greenfield School Management",
+            title: "School Management Sysetm",
             date: "February 28, 2026",
             stats: [
                 { label: "Students", value: `${studentCount}`, note: "Live from database" },
