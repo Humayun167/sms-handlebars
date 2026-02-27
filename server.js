@@ -43,26 +43,32 @@ function escapeRegex(value) {
 
 app.get("/", async (req, res) => {
     try {
-        const dashboardStudents = await Student.find()
-            .sort({ createdAt: -1 })
-            .limit(4)
-            .lean();
-        const dashboardTeachers = await Teacher.find()
-            .sort({ createdAt: -1 })
-            .limit(4)
-            .lean();
-        const dashboardClasses = await SchoolClass.find()
-            .sort({ createdAt: -1 })
-            .limit(4)
-            .lean();
-        const dashboardAnnouncements = await Announcement.find()
-            .sort({ date: -1 })
-            .limit(3)
-            .lean();
+        const [
+            studentsResult,
+            teachersResult,
+            classesResult,
+            announcementsResult,
+            studentCountResult,
+            teacherCountResult,
+            classCountResult
+        ] = await Promise.allSettled([
+            Student.find().sort({ createdAt: -1 }).limit(4).lean(),
+            Teacher.find().sort({ createdAt: -1 }).limit(4).lean(),
+            SchoolClass.find().sort({ createdAt: -1 }).limit(4).lean(),
+            Announcement.find().sort({ date: -1 }).limit(3).lean(),
+            Student.countDocuments(),
+            Teacher.countDocuments(),
+            SchoolClass.countDocuments()
+        ]);
 
-        const studentCount = await Student.countDocuments();
-        const teacherCount = await Teacher.countDocuments();
-        const classCount = await SchoolClass.countDocuments();
+        const dashboardStudents = studentsResult.status === "fulfilled" ? studentsResult.value : [];
+        const dashboardTeachers = teachersResult.status === "fulfilled" ? teachersResult.value : [];
+        const dashboardClasses = classesResult.status === "fulfilled" ? classesResult.value : [];
+        const dashboardAnnouncements = announcementsResult.status === "fulfilled" ? announcementsResult.value : [];
+
+        const studentCount = studentCountResult.status === "fulfilled" ? studentCountResult.value : 0;
+        const teacherCount = teacherCountResult.status === "fulfilled" ? teacherCountResult.value : 0;
+        const classCount = classCountResult.status === "fulfilled" ? classCountResult.value : 0;
 
         const dashboard = {
             title: "School Management Sysetm",
@@ -99,7 +105,7 @@ app.get("/", async (req, res) => {
 
         res.render("home", dashboard);
     } catch (error) {
-        console.error("Failed to load dashboard:", error.message);
+        console.error("Failed to load dashboard:", error);
         res.status(500).send("Unable to load dashboard.");
     }
 });
