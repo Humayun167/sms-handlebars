@@ -76,8 +76,7 @@ app.get("/", async (req, res) => {
             stats: [
                 { label: "Students", value: `${studentCount}`, note: "Live from database" },
                 { label: "Teachers", value: `${teacherCount}`, note: "Live from database" },
-                { label: "Classes", value: `${classCount}`, note: "Live from database" },
-                { label: "Fee Collection", value: "$48,750", note: "89% received" }
+                { label: "Classes", value: `${classCount}`, note: "Live from database" }
             ],
             announcements: dashboardAnnouncements.map((announcement) => ({
                 title: announcement.title,
