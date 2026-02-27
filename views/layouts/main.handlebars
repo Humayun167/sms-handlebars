@@ -53,6 +53,10 @@
             gap: 10px;
         }
 
+        .sidebar nav a {
+            white-space: nowrap;
+        }
+
         .sidebar a {
             color: #cbd5e1;
             text-decoration: none;
@@ -304,6 +308,98 @@
             .sidebar {
                 position: static;
                 height: auto;
+                padding: 14px;
+            }
+
+            .sidebar h2 {
+                margin-bottom: 12px;
+            }
+
+            .sidebar nav {
+                display: flex;
+                gap: 8px;
+                overflow-x: auto;
+                padding-bottom: 4px;
+            }
+
+            .sidebar nav a {
+                background: #1f2937;
+                border-radius: 999px;
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
+
+            .content {
+                padding: 14px;
+                gap: 14px;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 14px;
+            }
+
+            .topbar h1 {
+                font-size: 1.2rem;
+            }
+
+            .topbar .action-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-head {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            table {
+                min-width: 380px;
+            }
+
+            th,
+            td {
+                padding: 9px 6px;
+                font-size: 0.84rem;
+            }
+
+            .row-actions {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+
+            .row-actions form,
+            .row-actions button {
+                width: 100%;
+            }
+
+            .danger-btn {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .topbar p {
+                font-size: 0.8rem;
+            }
+
+            table {
+                min-width: 320px;
+            }
+
+            .student-form input,
+            .student-form select,
+            .action-btn,
+            button {
+                font-size: 0.88rem;
             }
         }
     </style>
