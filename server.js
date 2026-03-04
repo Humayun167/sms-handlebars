@@ -180,7 +180,7 @@ async function renderStudentsPage(req, res, message = "", formInput = null) {
         const highAttendance = attendanceStats.length ? attendanceStats[0].highAttendance : 0;
 
         const viewData = {
-            title: "Student Management",
+            title: "Student Management System",
             subtitle: "Manage enrollment, attendance, and student records",
             totalStudents,
             averageAttendance,
